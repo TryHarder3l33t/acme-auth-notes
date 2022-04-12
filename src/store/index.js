@@ -16,6 +16,10 @@ const notes = (state = initialNotes, action) => {
         ...state,
         notes: state.notes.filter((note) => note.id !== action.payload.id),
       };
+    case "ADD_NOTE":
+      return {
+        notes: [action.payload, ...state.notes],
+      };
     default:
       return state;
   }
@@ -58,6 +62,13 @@ const deleteNote = (noteId) => {
   };
 };
 
+const __addNote = (payload) => {
+  return {
+    type: "ADD_NOTE",
+    payload,
+  };
+};
+
 const addNote = (note) => {
   return async (dispatch) => {
     const token = window.localStorage.getItem("token");
@@ -70,6 +81,7 @@ const addNote = (note) => {
         }
       );
       console.log(data);
+      dispatch(__addNote(data));
     }
   };
 };

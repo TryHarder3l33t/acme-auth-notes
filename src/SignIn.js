@@ -1,6 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { signIn } from "./store";
+const { client_id } = require("../.env");
+const clientId = client_id;
 
 class SignIn extends React.Component {
   constructor() {
@@ -33,13 +36,18 @@ class SignIn extends React.Component {
     const { onChange, onSubmit } = this;
     const { username, password, error } = this.state;
     return (
-      <div>
+      <div style={{ width: "50%" }}>
         <form onSubmit={onSubmit}>
           {error}
           <input value={username} onChange={onChange} name="username" />
           <input value={password} onChange={onChange} name="password" />
           <button>Sign In</button>
         </form>
+        <a
+          href={`https://github.com/login/oauth/authorize$client_id=${clientId}`}
+        >
+          <button>Github Sign In</button>
+        </a>
       </div>
     );
   }

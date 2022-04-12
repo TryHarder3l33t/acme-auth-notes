@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { deleteNote, addNote } from "./store";
 
 const Notes = () => {
   const [note, setNote] = useState("hello");
   const notes = useSelector((state) => state.notes.notes);
   const dispatch = useDispatch();
-  //console.log("this is the notes notes", note);
+  const history = useHistory();
   const handleForm = (ev) => {
     setNote(ev.target.value);
   };
@@ -16,6 +16,8 @@ const Notes = () => {
     ev.preventDefault();
     console.log(note);
     dispatch(addNote(note));
+    setNote("");
+    console.log(history);
   };
 
   return (
