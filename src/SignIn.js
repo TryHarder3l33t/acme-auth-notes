@@ -43,11 +43,11 @@ class SignIn extends React.Component {
           <input value={password} onChange={onChange} name="password" />
           <button>Sign In</button>
         </form>
-        <a
+        {/* <a
           href={`https://github.com/login/oauth/authorize$client_id=${clientId}`}
         >
           <button>Github Sign In</button>
-        </a>
+        </a> */}
       </div>
     );
   }
