@@ -52,12 +52,10 @@ const deleteNote = (noteId) => {
   return async (dispatch) => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      console.log("this is the before token", token);
       let { data } = await axios.delete(`/api/note/${noteId}`, {
         headers: { authorization: token },
       });
       dispatch(__deleteNote(data));
-      console.log("This is the deleted note from index.js", data);
     }
   };
 };
@@ -80,7 +78,7 @@ const addNote = (note) => {
           headers: { authorization: token },
         }
       );
-      console.log(data);
+
       dispatch(__addNote(data));
     }
   };
@@ -117,7 +115,7 @@ const getNotes = () => {
           authorization: token,
         },
       });
-      console.log("This is the response", response.data);
+
       dispatch({ type: "SET_USER_NOTES", payload: response.data });
     }
   };

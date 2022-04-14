@@ -85,7 +85,6 @@ app.get("/api/github/callback", async (req, res, next) => {
         authorization: `token ${data.access_token}`,
       },
     });
-    console.log(` this is the github_${response.data.login}`);
 
     const newUser = await User.byGithub(`github_${response.data.login}`);
     const jwtToken = jwt.sign({ id: newUser.id }, process.env.JWT);
@@ -99,8 +98,6 @@ app.get("/api/github/callback", async (req, res, next) => {
       </head>
     </html>
     `);
-    //console.log("this is the newUser", newUser);
-    //res.send(newUser);
   } catch (ex) {
     next(ex);
   }
@@ -124,7 +121,6 @@ app.get("/api/purchases", async (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
   res.status(err.status || 500).send({ error: err.message });
 });
 

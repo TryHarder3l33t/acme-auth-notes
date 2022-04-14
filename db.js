@@ -38,17 +38,15 @@ User.addHook("beforeSave", async (user) => {
 });
 
 User.byGithub = async (githubUser) => {
-  console.log("this is what came in githubuser", githubUser);
-
   const user = await User.findOne({
     where: {
       username: githubUser,
     },
   });
-  console.log("this is the db user", user);
+
   if (!user) {
     const createdUser = await User.create({ username: githubUser });
-    console.log("this is not a user");
+
     return createdUser;
   }
   return user;
@@ -82,7 +80,6 @@ Note.byToken = async (token) => {
       },
     });
     if (notes) {
-      console.log(notes);
       return notes;
     }
   } catch (ex) {
@@ -103,7 +100,6 @@ Note.addByToken = async (token, note) => {
 };
 
 Note.deleteByToken = async (noteId, token) => {
-  console.log("This is the token", token);
   const user = await jwt.verify(token, process.env.JWT);
   const deleteNote = await Note.findOne({
     where: {

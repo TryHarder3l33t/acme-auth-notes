@@ -14,10 +14,9 @@ const Notes = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log(note);
+
     dispatch(addNote(note));
     setNote("");
-    console.log(history);
   };
 
   return (
