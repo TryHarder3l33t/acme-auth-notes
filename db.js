@@ -19,7 +19,11 @@ const Note = conn.define("note", {
 });
 
 const User = conn.define("user", {
-  username: STRING,
+  username: {
+    type: STRING,
+    allowNull: false,
+    unique: true,
+  },
   password: STRING,
 });
 
@@ -33,6 +37,23 @@ User.addHook("beforeSave", async (user) => {
   }
 });
 
+User.byGithub = async (githubUser) => {
+  console.log("this is what came in githubuser", githubUser);
+
+  const user = await User.findOne({
+    where: {
+      username: githubUser,
+    },
+  });
+  console.log("this is the db user", user);
+  if (!user) {
+    const createdUser = await User.create({ username: githubUser });
+    console.log("this is not a user");
+    return createdUser;
+  }
+  return user;
+};
+
 User.byToken = async (token) => {
   try {
     const payload = await jwt.verify(token, process.env.JWT);
@@ -41,12 +62,10 @@ User.byToken = async (token) => {
         exclude: ["password"],
       },
     });
+
     if (user) {
       return user;
     }
-    const error = Error("bad credentials");
-    error.status = 401;
-    throw error;
   } catch (ex) {
     const error = Error("bad credentials");
     error.status = 401;

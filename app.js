@@ -1,10 +1,18 @@
 const express = require("express");
+const axios = require("axios");
 const app = express();
-app.use(express.json());
+//app.use(express.json());
 const {
   models: { User, Note },
 } = require("./db");
 const path = require("path");
+const env = require("./.env");
+const jwt = require("jsonwebtoken");
+
+process.env.client_id = env.client_id;
+process.env.client_secret = env.client_secret;
+
+app.use(express.json());
 
 app.use("/dist", express.static(path.join(__dirname, "dist")));
 
@@ -39,6 +47,53 @@ app.get("/api/notes", async (req, res, next) => {
 app.post("/api/note", async (req, res, next) => {
   try {
     res.send(await Note.addByToken(req.headers.authorization, req.body.note));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/github/callback", async (req, res, next) => {
+  try {
+    let response = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: process.env.client_id,
+        client_secret: process.env.client_secret,
+        code: req.query.code,
+      },
+      {
+        headers: {
+          accept: "application/json",
+        },
+      }
+    );
+    const data = response.data;
+    if (data.error) {
+      const error = Error(data.error);
+      error.status = 401;
+      throw error;
+    }
+    response = await axios.get("https://api.github.com/user", {
+      headers: {
+        authorization: `token ${data.access_token}`,
+      },
+    });
+    console.log(` this is the github_${response.data.login}`);
+
+    const newUser = await User.byGithub(`github_${response.data.login}`);
+    const jwtToken = jwt.sign({ id: newUser.id }, process.env.JWT);
+    res.send(`
+    <html>
+      <head>
+        <script>
+          window.localStorage.setItem('token', '${jwtToken}')
+          window.document.location = '/'
+        </script>
+      </head>
+    </html>
+    `);
+    //console.log("this is the newUser", newUser);
+    //res.send(newUser);
   } catch (ex) {
     next(ex);
   }
