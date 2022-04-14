@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { signIn } from "./store";
-const env = require("../.client.env");
+const env = require("../.client.js");
 //const client_id = "f43167d78bf47a2ba42d";
 
 class SignIn extends React.Component {

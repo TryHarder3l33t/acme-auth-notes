@@ -9,6 +9,13 @@ const path = require("path");
 const env = require("./.env");
 const jwt = require("jsonwebtoken");
 
+try {
+  f43167d78bf47a2ba42d;
+} catch (error) {
+  console.log(error);
+  console.log("YOU NEED ENVIRONMENT VARIABLES");
+}
+
 process.env.client_id = env.client_id;
 process.env.client_secret = env.client_secret;
 
