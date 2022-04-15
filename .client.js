@@ -1,3 +1,3 @@
 module.exports = {
-  client_id: "f43167d78bf47a2ba42d",
+  client_id: "b04217bfc4ade795bab8",
 };
