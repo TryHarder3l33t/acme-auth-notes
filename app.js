@@ -1,28 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const app = express();
-//app.use(express.json());
 const {
   models: { User, Note },
 } = require("./db");
 const path = require("path");
-//const env = require("./.env");
 const jwt = require("jsonwebtoken");
-
-try {
-} catch (error) {
-  console.log(error);
-  console.log("YOU NEED ENVIRONMENT VARIABLES");
-}
-
-// process.env.client_id = env.client_id;
-// process.env.client_secret = env.client_secret;
-
-const clientId = process.env.client_id;
-const clientSecret = process.env.client_secret;
-
-// const clientId = process.env.client_id || env.client_id;
-// const clientSecret = process.env.client_secret || env.client_secret;
 
 app.use(express.json());
 
@@ -69,8 +53,8 @@ app.get("/api/github/callback", async (req, res, next) => {
     let response = await axios.post(
       "https://github.com/login/oauth/access_token",
       {
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
         code: req.query.code,
       },
       {
