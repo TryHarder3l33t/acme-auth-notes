@@ -2,7 +2,7 @@
 
 # HEROKU LIVE
 
-https://oauth-and-login-eric.herokuapp.com/
+https://eric-oauth-notes.herokuapp.com/
 
 - npm i
 - createdb acme_db
