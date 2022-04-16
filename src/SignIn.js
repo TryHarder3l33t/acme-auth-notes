@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { signIn } from "./store";
-const env = require("../.client.js");
 
 class SignIn extends React.Component {
   constructor() {
@@ -42,7 +41,7 @@ class SignIn extends React.Component {
           <button>Sign In</button>
         </form>
         <a
-          href={`https://github.com/login/oauth/authorize?client_id=${env.client_id}`}
+          href={`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID} `}
         >
           <button>Github Sign In</button>
         </a>

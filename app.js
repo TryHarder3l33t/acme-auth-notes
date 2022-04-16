@@ -7,12 +7,20 @@ const {
 } = require("./db");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const ejs = require("ejs");
+app.engine("html", ejs.renderFile);
 
 app.use(express.json());
 
 app.use("/dist", express.static(path.join(__dirname, "dist")));
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+//app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+
+app.get("/", (req, res, next) =>
+  res.render(path.join(__dirname, "index.html"), {
+    client_id: process.env.CLIENT_ID,
+  })
+);
 
 app.post("/api/auth", async (req, res, next) => {
   try {
